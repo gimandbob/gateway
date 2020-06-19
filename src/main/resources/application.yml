@@ -1,0 +1,74 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: inspection
+          uri: http://localhost:8081
+          predicates:
+            - Path=/inspections/** 
+        - id: diagnosis
+          uri: http://localhost:8082
+          predicates:
+            - Path=/diagnoses/** 
+        - id: kitSend
+          uri: http://localhost:8083
+          predicates:
+            - Path=/sends/** 
+        - id: testdashboard
+          uri: http://localhost:8084
+          predicates:
+            - Path= /testdashboards/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: inspection
+          uri: http://inspection:8080
+          predicates:
+            - Path=/inspections/** 
+        - id: diagnosis
+          uri: http://diagnosis:8080
+          predicates:
+            - Path=/diagnoses/** 
+        - id: kitSend
+          uri: http://kitSend:8080
+          predicates:
+            - Path=/sends/** 
+        - id: testdashboard
+          uri: http://testdashboard:8080
+          predicates:
+            - Path= /testdashboards/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
